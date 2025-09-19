@@ -1,0 +1,181 @@
+<style>
+    /* 頁籤導航樣式 */
+    .detail-page-tabs {
+        display: flex;
+        border-bottom: 2px solid var(--border-color);
+        margin-bottom: var(--spacing-6);
+    }
+    .tab-link {
+        padding: var(--spacing-4) var(--spacing-6);
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        font-weight: 600;
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+    }
+    .tab-link:hover {
+        color: var(--text-primary);
+    }
+    .tab-link.active {
+        color: var(--accent-blue);
+        border-bottom-color: var(--accent-blue);
+    }
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* 資訊摘要卡片 */
+    .summary-card {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--spacing-6);
+        background-color: var(--secondary-bg);
+        padding: var(--spacing-6);
+        border-radius: var(--rounded-xl);
+        margin-bottom: var(--spacing-6);
+        border: 1px solid var(--border-color);
+        position: relative; /* 為了編輯按鈕的定位 */
+    }
+    .summary-item {
+        display: flex;
+        flex-direction: column;
+    }
+    .summary-label {
+        font-size: var(--font-size-sm);
+        color: var(--text-muted);
+        margin-bottom: var(--spacing-2);
+        font-weight: 500;
+    }
+    .summary-value {
+        font-size: var(--font-size-lg);
+        font-weight: 700;
+        color: var(--text-primary);
+    }
+    .summary-value a.text-link {
+        color: var(--accent-blue);
+        text-decoration: none;
+    }
+     .summary-value a.text-link:hover {
+        text-decoration: underline;
+    }
+
+    /* 互動紀錄區塊 */
+    .interaction-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr; /* 左側較寬，右側較窄 */
+        gap: var(--spacing-8);
+    }
+    .interaction-history {
+        max-height: 600px;
+        overflow-y: auto;
+        background: var(--primary-bg);
+        border-radius: var(--rounded-lg);
+        padding: var(--spacing-2) var(--spacing-4);
+    }
+
+    @media (max-width: 992px) {
+        .interaction-layout {
+            grid-template-columns: 1fr;
+        }
+        /* 在手機版上，將表單移到上方 */
+        .interaction-form-section {
+            order: -1;
+        }
+    }
+</style>
+
+<div id="opportunity-detail-container">
+    <div id="opportunity-summary-card" class="summary-card">
+        </div>
+
+    <nav class="detail-page-tabs" id="opportunity-detail-tabs">
+        <div class="tab-link active" data-tab="interactions">互動與新增</div>
+        <div class="tab-link" data-tab="events">事件報告</div>
+        <div class="tab-link" data-tab="details">詳細資料</div>
+    </nav>
+
+    <div id="tab-content-interactions" class="tab-content active">
+        <div class="interaction-layout">
+            <div class="interaction-history-section">
+                <h3 style="margin-bottom: 1rem;">歷史互動紀錄</h3>
+                <div id="interaction-history-list" class="interaction-history">
+                    </div>
+            </div>
+            <div class="interaction-form-section">
+                <h3 style="margin-bottom: 1rem;">新增/編輯互動</h3>
+                <form id="new-interaction-form">
+                    <input type="hidden" id="interaction-opportunity-id">
+                    <input type="hidden" id="interaction-edit-rowIndex">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">互動類型</label>
+                            <div class="select-wrapper">
+                                <select class="form-select" id="interaction-event-type" required></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">互動時間</label>
+                            <input type="datetime-local" class="form-input" id="interaction-time" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">內容摘要 *</label>
+                        <textarea class="form-textarea" id="interaction-summary" placeholder="記錄互動重點..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">下次行動</label>
+                        <input type="text" class="form-input" id="interaction-next-action" placeholder="準備報價單並於下週三前寄出...">
+                    </div>
+                    <button type="submit" class="submit-btn" id="interaction-submit-btn">💾 新增紀錄</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-content-events" class="tab-content">
+        <div class="dashboard-widget">
+            <div class="widget-header">
+                <h2 class="widget-title">相關事件報告</h2>
+            </div>
+            <div id="opportunity-event-logs-list" class="widget-content">
+                </div>
+        </div>
+    </div>
+
+    <div id="tab-content-details" class="tab-content">
+         <div class="dashboard-widget">
+            <div class="widget-header">
+                <h2 class="widget-title">機會案件完整資料</h2>
+            </div>
+            <div id="opportunity-full-details-list" class="widget-content">
+                </div>
+        </div>
+    </div>
+
+    <div class="dashboard-widget" style="margin-top: var(--spacing-8);">
+        <div class="widget-header">
+            <h2 class="widget-title">關聯聯絡人</h2>
+            <button class="action-btn primary" id="add-associated-contact-btn">+ 關聯聯絡人</button>
+        </div>
+        <div id="associated-contacts-list" class="widget-content">
+            </div>
+    </div>
+
+    <div class="dashboard-widget" style="margin-top: var(--spacing-6);">
+        <div class="widget-header">
+            <h2 class="widget-title">關聯機會</h2>
+            <button class="action-btn primary" id="add-associated-opportunity-btn">+ 關聯機會</button>
+        </div>
+        <div id="associated-opportunities-list" class="widget-content">
+            </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<!-- 系統狀態模態框 -->
+<div id="system-status-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">🔍 系統狀態檢查</h2>
+            <button class="close-btn" onclick="closeModal('system-status-modal')">&times;</button>
+        </div>
+        <div id="system-status-content">
+            <div class="loading show">
+                <div class="spinner"></div>
+                <p>檢查系統狀態中...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 通用確認對話框 -->
+<div id="confirm-dialog" class="modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2 class="modal-title">確認操作</h2>
+            <button class="close-btn" onclick="closeModal('confirm-dialog')">&times;</button>
+        </div>
+        <div id="confirm-message" style="margin-bottom: 20px; padding: 20px; text-align: center;">
+            <!-- 確認訊息將在這裡顯示 -->
+        </div>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button class="action-btn" style="background: #6c757d;" onclick="closeModal('confirm-dialog')">取消</button>
+            <button class="action-btn" id="confirm-action-btn" onclick="executeConfirmAction()">確認</button>
+        </div>
+    </div>
+</div>
+
+<!-- 載入中覆蓋層 -->
+<div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="loading-content">
+        <div class="spinner"></div>
+        <p id="loading-message">處理中...</p>
+    </div>
+</div>
+
+<!-- 通知訊息模板 -->
+<template id="notification-template">
+    <div class="notification">
+        <div class="notification-content">
+            <span class="notification-icon"></span>
+            <span class="notification-message"></span>
+        </div>
+        <button class="notification-close">&times;</button>
+    </div>
+</template>

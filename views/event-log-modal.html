@@ -1,0 +1,188 @@
+<style>
+    #event-log-modal .modal-content {
+        max-width: 900px;
+    }
+    #event-log-form fieldset {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    #event-log-form legend {
+        padding: 0 10px;
+        font-weight: 600;
+        color: #007bff;
+    }
+    .checkbox-group, .radio-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding-top: 5px;
+    }
+    .checkbox-group label, .radio-group label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<div id="event-log-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title" id="event-log-modal-title">📋 事件紀錄</h2>
+            <button class="close-btn" onclick="closeModal('event-log-modal')">&times;</button>
+        </div>
+        
+        <div id="event-log-opportunity-info" class="alert alert-info" style="margin-bottom: 20px;">
+            載入機會資訊中...
+        </div>
+
+        <div id="event-log-opportunity-selector" class="form-group" style="display: none;">
+            <label for="event-log-select-opportunity" class="form-label">選擇關聯機會 *</label>
+            <select id="event-log-select-opportunity" class="form-select" required>
+                <option value="">載入機會列表中...</option>
+            </select>
+        </div>
+
+        <form id="event-log-form">
+            <input type="hidden" id="event-log-opportunityId">
+            <input type="hidden" id="event-log-eventId">
+
+            <div class="form-group">
+                <label for="event-name" class="form-label">事件名稱 *</label>
+                <input type="text" class="form-input" id="event-name" placeholder="例如：首次拜訪會議、產品 Demo" required>
+            </div>
+
+            <fieldset>
+                <legend>1️⃣ 需求摘要區</legend>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">下單機率</label>
+                        <div class="radio-group" id="order-probability">
+                            <label><input type="radio" name="orderProbability" value="高"> 高</label>
+                            <label><input type="radio" name="orderProbability" value="中"> 中</label>
+                            <label><input type="radio" name="orderProbability" value="低"> 低</label>
+                            <label><input type="radio" name="orderProbability" value="C"> C</label>
+                            <label><input type="radio" name="orderProbability" value="D"> D</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">可能下單數量</label>
+                        <input type="text" class="form-input" id="potential-quantity" placeholder="例：20台、50set">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">銷售管道</label>
+                         <div class="radio-group" id="sales-channel">
+                            <label><input type="radio" name="salesChannel" value="SI"> SI</label>
+                            <label><input type="radio" name="salesChannel" value="經銷商"> 經銷商</label>
+                            <label><input type="radio" name="salesChannel" value="TFC"> TFC</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">公司規模 (Size)</label>
+                        <div class="radio-group" id="company-size">
+                            <label><input type="radio" name="companySize" value="超大100+"> 超大100+</label>
+                            <label><input type="radio" name="companySize" value="大50-99"> 大50-99</label>
+                            <label><input type="radio" name="companySize" value="中20-49"> 中20-49</label>
+                             <label><input type="radio" name="companySize" value="小19以下"> 小19以下</label>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">洽談攜帶人員 (我方)</label>
+                        <input type="text" class="form-input" id="our-participants" placeholder="參與人員姓名">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">拜訪對象 (客戶)</label>
+                        <input type="text" class="form-input" id="client-participants" placeholder="單位或職稱 / 姓名">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">拜訪地點</label>
+                    <input type="text" class="form-input" id="visit-place" placeholder="客戶地點">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">生產線特徵 (可多選)</label>
+                    <div class="checkbox-group" id="line-features">
+                        <label><input type="checkbox" value="工具機"> 工具機</label>
+                        <label><input type="checkbox" value="ROBOT"> ROBOT</label>
+                        <label><input type="checkbox" value="傳產機"> 傳產機</label>
+                        <label><input type="checkbox" value="PLC"> PLC</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">現況紀錄 - 生產</label>
+                    <textarea class="form-textarea" id="production-status" rows="3" placeholder="客戶目前生產情況"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">現況紀錄 - IoT</label>
+                    <textarea class="form-textarea" id="iot-status" rows="3" placeholder="客戶 IoT 導入情況"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">註解</label>
+                    <textarea class="form-textarea" id="summary-notes" rows="2" placeholder="其他補充事項"></textarea>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>2️⃣ 廠內痛點區</legend>
+
+                <div class="form-group">
+                    <label class="form-label">痛點分類 (可多選)</label>
+                    <div class="checkbox-group" id="pain-points">
+                        <label><input type="checkbox" value="Monitoring"> Monitoring</label>
+                        <label><input type="checkbox" value="Improve OEE"> Improve OEE</label>
+                        <label><input type="checkbox" value="Reduce Man-hours"> Reduce Man-hours</label>
+                        <label><input type="checkbox" value="Others"> Others</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">詳細說明</label>
+                    <textarea class="form-textarea" id="pain-point-details" rows="3" placeholder="客戶需求、導入目的"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">System Image (系統架構)</label>
+                    <textarea class="form-textarea" id="system-architecture" rows="3" placeholder="系統架構簡圖或文字描述"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">External Linkage (外部系統串接)</label>
+                    <textarea class="form-textarea" id="external-systems" rows="3" placeholder="ERP / MES / 3rd App"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">機台與信號數</label>
+                        <input type="text" class="form-input" id="hardware-scale" placeholder="例：機台數量、PLC 數量">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">VoC (客戶對 FANUC 期望)</label>
+                         <div class="radio-group" id="fanuc-expectation">
+                            <label><input type="radio" name="fanucExpectation" value="Yes"> Yes</label>
+                            <label><input type="radio" name="fanucExpectation" value="Probably"> Probably</label>
+                            <label><input type="radio" name="fanucExpectation" value="Maybe"> Maybe</label>
+                            <label><input type="radio" name="fanucExpectation" value="No"> No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">補充說明</label>
+                    <textarea class="form-textarea" id="pain-point-notes" rows="2" placeholder="其他備註"></textarea>
+                </div>
+            </fieldset>
+
+            <button type="submit" class="submit-btn" id="event-log-submit-btn">💾 儲存事件紀錄</button>
+        </form>
+    </div>
+</div>

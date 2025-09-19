@@ -1,0 +1,89 @@
+<div id="new-meeting-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">📅 建立會議</h2>
+            <button class="close-btn" onclick="closeModal('new-meeting-modal')">&times;</button>
+        </div>
+        <form id="new-meeting-form">
+            <div class="form-group">
+                <label class="form-label">選擇機會案件</label>
+                <div class="select-wrapper">
+                    <select class="form-select" id="meeting-opportunity" onchange="updateMeetingInfo()">
+                        <option value="">選擇相關機會...</option>
+                        <option value="manual">手動輸入客戶資訊</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="manual-meeting-info" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">客戶公司</label>
+                        <input type="text" class="form-input" id="meeting-manual-company">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">聯絡人</label>
+                        <input type="text" class="form-input" id="meeting-manual-contact">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">會議標題 *</label>
+                <input type="text" class="form-input" id="meeting-title" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">開始時間 *</label>
+                    <input type="datetime-local" class="form-input" id="meeting-start-time" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">持續時間 (分鐘)</label>
+                    <div class="select-wrapper">
+                        <select class="form-select" id="meeting-duration">
+                            <option value="30">30分鐘</option>
+                            <option value="60" selected>1小時</option>
+                            <option value="90">1.5小時</option>
+                            <option value="120">2小時</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">會議地點</label>
+                <input type="text" class="form-input" id="meeting-location" placeholder="如: 公司會議室、客戶辦公室、線上會議...">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">會議備註</label>
+                <textarea class="form-textarea" id="meeting-description" placeholder="會議目的、參與人員、準備事項..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="create-interaction-record" checked>
+                    同時建立互動紀錄
+                </label>
+            </div>
+            
+            <button type="submit" class="submit-btn">📅 建立會議事件</button>
+        </form>
+    </div>
+</div>
+
+<div id="week-events-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">📅 本週活動行程</h2>
+            <button class="close-btn" onclick="closeModal('week-events-modal')">&times;</button>
+        </div>
+        <div id="week-events-content">
+            <div class="loading show">
+                <div class="spinner"></div>
+                <p>載入本週活動中...</p>
+            </div>
+        </div>
+    </div>
+</div>
